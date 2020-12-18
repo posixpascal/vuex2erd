@@ -38,18 +38,19 @@ ${fields}
         case 'belongsToMany':
         case 'hasMany':
         case 'hasOne':
-          const line = '||--o{';
+          const line = '-->';
 
           this.source += `
-${relation.target} ${line} ${model.name}`;
+${model.name} ${line} ${relation.target} : ${relation.type}`;
           break;
 
         case 'hasManyThrough':
         case 'morphMany':
         case 'morphOne':
-          this.source += `
-${relation.through} ||--o{ ${relation.target}
-${model.name} ||--o{ ${relation.through}`;
+          if (relation.through && relation.target && model.name) {
+            this.source += `
+${relation.through} -- ${model.name}`;
+          }
       }
     });
   }
